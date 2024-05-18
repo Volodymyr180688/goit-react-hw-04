@@ -32,14 +32,11 @@ const ImageModal = ({ isOpen, onClose, imageData }) => {
       style={customStyles}
       contentLabel="Image Modal"
     >
-      <div className={style.container}>
-        <img
+      <img
           className={style.image}
           src={imageData.urls.regular}
           alt={imageData.alt_description}
         />
-        
-      </div>
     </Modal>
   );
 };

@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
-const ErrorMessage = ({ message }) => {
+const ErrorMessage = ({ showError }) => {
   useEffect(() => {
-    if (message) {
-      toast.error('Whoops. Something went wrong! Please try reloading this page!');
+    if (showError) {
+      toast.error("Whoops. Something went wrong! Please try reloading this page!");
     }
-  }, [message]);
+  }, [showError]);
 
   return null;
 };

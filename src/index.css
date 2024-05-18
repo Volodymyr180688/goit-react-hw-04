@@ -23,10 +23,11 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  box-sizing: border-box;
+  width: 100%;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+  font: 500 16px / 1.5 "Montserrat", sans-serif;
+  margin: 0 auto;
 }
 
 h1,

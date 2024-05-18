@@ -28,6 +28,7 @@ function App() {
     if (!topic) {
       toast.error("Please enter a search query!");
       setArticles([]);
+      setHasLoadMore(false);
       return;
     }
     setQuery(topic);

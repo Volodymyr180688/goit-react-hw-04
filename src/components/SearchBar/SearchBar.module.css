@@ -10,7 +10,7 @@
   padding: 0;
   display: flex;
   gap: 5px;
-  width: 500px;
+  max-width: 500px;
   background-color: aliceblue;
   margin-right: auto;
   margin-left: auto;

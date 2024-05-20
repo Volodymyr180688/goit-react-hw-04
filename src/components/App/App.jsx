@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { getArticles } from '../../api-unsplash';
 
@@ -21,10 +21,33 @@ function App() {
   const [page, setPage] = useState(1);
   const [hasLoadMore, setHasLoadMore] = useState(false);
   const [query, setQuery] = useState("");
- const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedImageData, setSelectedImageData] = useState(null);
 
-  const handleSearch = async (topic) => {
+ useEffect(() => {
+    if (!query) return;
+
+    const fetchArticles = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+        const fetchedArticles = await getArticles(query, page);
+        setArticles(prevArticles => (page === 1 ? fetchedArticles : [...prevArticles, ...fetchedArticles]));
+        setHasLoadMore(fetchedArticles.length > 0);
+        if (page === 1 && fetchedArticles.length === 0) {
+          toast.error("No results found for your search query.");
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, [query, page]);
+
+  const handleSearch = (topic) => {
     if (!topic) {
       toast.error("Please enter a search query!");
       setArticles([]);
@@ -34,31 +57,10 @@ function App() {
     setQuery(topic);
     setPage(1);
     setHasLoadMore(false);
-    try {
-      setLoading(true);
-      setError(false);
-      setArticles([]);
-      const fetchedArticles = await getArticles(topic, 1);
-      setArticles(fetchedArticles);
-      setHasLoadMore(fetchedArticles.length > 0);
-      if (fetchedArticles.length === 0) {
-        toast.error("No results found for your search query.");
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
   };
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    setLoading(true);
-    const fetchedArticles = await getArticles(query, nextPage);
-    setLoading(false);
-    setArticles((prevArticles) => [...prevArticles, ...fetchedArticles]);
-    setHasLoadMore(fetchedArticles.length > page);
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
   };
 
   const openModal = (imageData) => {
